@@ -18,7 +18,12 @@
     padding-bottom: 15px;
 }
 .showtasks{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     padding-top: 20px;
+    width: 100vw;
 }
 .input {
     border: none;
@@ -48,10 +53,13 @@
     border-radius: 3px;
     border: none;
 }
-
+.tasklink{
+    text-decoration: none;
+    color: black;
+}
 .task{
     height: 30px;
-    width: 350px;
+    width: 60%;
     border-radius: 3px;
     display: flex;
     justify-content: space-between;
@@ -63,7 +71,7 @@
 
 .completed {
     height: 30px;
-    width: 350px;
+    width: 60%;
     border-radius: 3px;
     display: flex;
     justify-content: space-evenly;
@@ -71,6 +79,8 @@
     background: rgb(193, 227,246);
     text-decoration: line-through;
     color: grey;
+    padding: 3px;
+    margin: 7px;
 }
 .delete{
     font-size: 22px;

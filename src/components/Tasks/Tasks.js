@@ -1,72 +1,43 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addTask } from '../../ducks/reducer';
-import axios from 'axios';
+import { addTask, getTasks, deleteTask, completeTask} from '../../ducks/reducer';
 import './Tasks.css';
+import { Link } from 'react-router-dom';
 
 class Tasks extends Component {
     constructor(){
         super();
         this.state={
-            task: {
                 title: '',
                 description: '',
-                completed: false
-            },
-            tasks: []
+                completed: false,
+                tasks: []
         }
-        this.updateStatus = this.updateStatus.bind(this);
-        this.newTask = this.newTask.bind(this);
-        this.deleteTask = this.deleteTask.bind(this);
     }
-    componentDidMount(){
-        axios.get('/api/tasks').then(res=>{
-            console.log(res.data)
-            this.props.addTask(res.data);
-            this.setState({
-                tasks: res.data
-            })
-        })
-    }
-    updateTitle(val){
-        this.setState({
-            task: {...this.state.task, title: val}
-        })
-        console.log(this.state.task)
-    }
-    updateDesc(val){
-        this.setState({
-            task: {...this.state.task, description: val}
-        })
-        console.log(this.state.task)
-    }
-    updateStatus(prevState){
-        this.setState({
-            task: {...this.state.task, completed: !prevState}
-        })
-        console.log(this.state.task)
-    }
-    newTask(){
-        axios.post('/api/tasks', {task: this.state.task}).then(res=>{
-            console.log(res.data);
-            this.props.addTask(res.data);
-        })
-        this.componentDidMount();
-    }
-    deleteTask(id){
-        axios.delete(`/api/tasks/${id}`).then(res=>{
-            console.log(res.data);
-        })
-    }
+            componentDidMount(){
+                this.props.getTasks();
+            }
+
+            updateTitle(val){
+                this.setState({
+                    title: val
+                })
+                // console.log(this.state.title)
+            }
+            updateDesc(val){
+                this.setState({
+                    description: val
+                })
+            }
 
     render() {
-        const showTasks = this.state.tasks.map(task=>{
+        const showTasks = this.props.tasks.map(task=>{
             return(
-                <div className={this.state.tasks.completed ? 'completed' : 'task'}>
-                    <p>{task.title}</p>
+                <div className={task.completed === true ? 'completed' : 'task'} key={task.id}>
+                    <Link to={`/editmode/${task.id}`} className='tasklink'><p>{task.title}</p></Link>
                     <div>
-                    <button className='complete' onClick={this.updateStatus}>Complete</button>
-                    <span className='delete' onClick={this.deleteTask(task.id)}>&times;</span>
+                    <button className='complete' onClick={()=>this.props.completeTask(task.id, true)}>Complete</button>
+                    <div className='delete' onClick={()=>this.props.deleteTask(task.id)}>&times;</div>
                     </div>
                 </div>
             )
@@ -76,8 +47,8 @@ class Tasks extends Component {
                 <div className='todobox'>
                 <h1>TO-DO:</h1>
                 <input className='input' placeholder='title' type='text' onChange={e => this.updateTitle(e.target.value)} />
-                <input className= 'input' placeholder='description' type='text' onChange={e=> this.updateDesc(e.target.value)} />
-                <button className='todobtn' onClick={this.newTask}>Add new To-do</button>
+                {/* <input className= 'input' placeholder='description' type='text' onChange={e=> this.updateDesc(e.target.value)} /> */}
+                <button className='todobtn' onClick={()=>this.props.addTask(this.state.title)}>Add new To-do</button>
                 </div>
 
 
@@ -94,4 +65,4 @@ function mapStateToProps(state){
         tasks: state.tasks
     }
 }
-export default connect(mapStateToProps, { addTask })(Tasks);
+export default connect(mapStateToProps, { addTask, getTasks, deleteTask, completeTask })(Tasks);
