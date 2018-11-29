@@ -8,26 +8,22 @@ class EditMode extends Component {
     constructor(){
         super();
         this.state={
+            taskId:0,
             id: 0,
             title: '',
             description: ''
         }
     }
     componentDidMount(){
-        sessionStorage.setItem('taskID', parseInt(this.props.match.params.id));
-        const currentID = sessionStorage.getItem('taskID');
-        console.log(currentID)
-        
         const taskID = this.props.tasks.findIndex((val)=> val.id === parseInt(this.props.match.params.id));
-        // const taskID = this.props.tasks.findIndex((val)=> val.id === parseInt(currentID));
-
+        
         this.props.tasks[taskID] && 
         this.setState({
+            taskId: taskID,
             id: this.props.tasks[taskID].id,
             title: this.props.tasks[taskID].title,
             description: this.props.tasks[taskID].description
         })
-        
     }
 
     updateTitle(value){
@@ -43,17 +39,14 @@ class EditMode extends Component {
         })
     }
 
-    cancelBtn(prevState){
-        if(prevState){
-        this.refs.editinputbox.value = prevState.title;
-        this.refs.editdescbox.value= prevState.description;
-        }
+    cancelBtn(){
+       this.setState({
+           title: this.props.tasks[this.state.taskId].title,
+           description: this.props.tasks[this.state.taskId].description
+       })
     }
 
     render() {
-        
-        console.log('session storage', sessionStorage.getItem('taskID'))
-        
         const {id, title, description} = this.state;
         return (
             <div className='editcontainer'>
