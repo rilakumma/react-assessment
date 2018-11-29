@@ -18,8 +18,8 @@ class EditMode extends Component {
         const currentID = sessionStorage.getItem('taskID');
         console.log(currentID)
         
-        // const taskID = this.props.tasks.findIndex((val)=> val.id === parseInt(this.props.match.params.id));
-        const taskID = this.props.tasks.findIndex((val)=> val.id === parseInt(currentID));
+        const taskID = this.props.tasks.findIndex((val)=> val.id === parseInt(this.props.match.params.id));
+        // const taskID = this.props.tasks.findIndex((val)=> val.id === parseInt(currentID));
 
         this.props.tasks[taskID] && 
         this.setState({
