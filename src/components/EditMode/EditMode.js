@@ -8,10 +8,28 @@ class EditMode extends Component {
     constructor(){
         super();
         this.state={
+            id: 0,
             title: '',
             description: ''
         }
     }
+    componentDidMount(){
+        sessionStorage.setItem('taskID', parseInt(this.props.match.params.id));
+        const currentID = sessionStorage.getItem('taskID');
+        console.log(currentID)
+        
+        // const taskID = this.props.tasks.findIndex((val)=> val.id === parseInt(this.props.match.params.id));
+        const taskID = this.props.tasks.findIndex((val)=> val.id === parseInt(currentID));
+
+        this.props.tasks[taskID] && 
+        this.setState({
+            id: this.props.tasks[taskID].id,
+            title: this.props.tasks[taskID].title,
+            description: this.props.tasks[taskID].description
+        })
+        
+    }
+
     updateTitle(value){
         console.log(value)
         this.setState({
@@ -24,33 +42,38 @@ class EditMode extends Component {
             description: value
         })
     }
-    cancelBtn(){
 
+    cancelBtn(prevState){
+        if(prevState){
+        this.refs.editinputbox.value = prevState.title;
+        this.refs.editdescbox.value= prevState.description;
+        }
     }
+
     render() {
-        console.log('props',this.props)
-        console.log('params',this.props.match.params.id)
-        const getTask = this.props.tasks.filter(task=> task.id === parseInt(this.props.match.params.id ))
-        console.log('gettask',getTask)
-        console.log('prevstate.....', this.prevState);
-        console.log('newstate....', this.state.title);
-        const showTask = getTask.map(task=>{
-            return <div className='edittask' key={task.id}>
-                <input className='titleedit' value={task.title} onChange={e=> this.updateTitle(e.target.value)} />
-                <input className='descedit' value={task.description} onChange={e=> this.updateDesc(e.target.value)} />
-                <div className='buttons'>
-                <button onClick={()=> this.props.completeTask(task.id, true)} className='completebtn'>Complete</button>
-                <button className='completebtn'>Cancel</button>
-                <button onClick={()=> this.props.deleteTask(task.id)} className='deletebtn'>Delete</button>
-                <button onClick={()=>this.props.editTask(task.id, this.state.title, this.state.description)} className='save'>Save</button>
-                </div>
-            </div>
-        })
         
+        console.log('session storage', sessionStorage.getItem('taskID'))
+        
+        const {id, title, description} = this.state;
         return (
             <div className='editcontainer'>
                 <Link to='/' className='goback'>Back to Tasks</Link>
-                {showTask}
+
+                
+                        <div className='edittask' >
+                        <p>title</p>
+                        <input className='titleedit' value={this.state.title} onChange={e=> this.updateTitle(e.target.value)} ref='editinputbox' />
+                        <p>description</p>
+                        <input className='descedit' value={this.state.description} onChange={e=> this.updateDesc(e.target.value)} ref='editdescbox' />
+                        <div className='buttons'>
+                        <button onClick={()=> this.props.completeTask(id, true)} className='completebtn'>Complete</button>
+                        <button className='completebtn' onClick={()=> this.cancelBtn()}>Cancel</button>
+                        <Link to='/'><button onClick={()=> this.props.deleteTask(id)} className='deletebtn'>Delete</button></Link>
+                        <Link to='/'><button onClick={()=>this.props.editTask(id, title, description)} className='save'>Save</button></Link>
+                        </div>
+                        
+
+            </div>
             </div>
         );
     }

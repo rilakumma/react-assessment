@@ -18,15 +18,15 @@ class Tasks extends Component {
                 this.props.getTasks();
             }
 
+            // componentDidUpdate(prevState){
+            //     if(prevState.tasks !== this.state.tasks){
+            //         this.props.getTasks();
+            //     }
+            // }
+
             updateTitle(val){
                 this.setState({
                     title: val
-                })
-                // console.log(this.state.title)
-            }
-            updateDesc(val){
-                this.setState({
-                    description: val
                 })
             }
 
@@ -34,9 +34,9 @@ class Tasks extends Component {
         const showTasks = this.props.tasks.map(task=>{
             return(
                 <div className={task.completed === true ? 'completed' : 'task'} key={task.id}>
-                    <Link to={`/editmode/${task.id}`} className='tasklink'><p>{task.title}</p></Link>
-                    <div>
-                    <button className='complete' onClick={()=>this.props.completeTask(task.id, true)}>Complete</button>
+                    <Link to={`/editmode/${task.id}`} className='tasklink'><p className='tasktitledisplay'>{task.title}</p></Link>
+                    <div className='buttonholder'>
+                    <button className={task.completed ? 'taskcomplete' : 'complete'} onClick={()=>this.props.completeTask(task.id, true)}>Complete</button>
                     <div className='delete' onClick={()=>this.props.deleteTask(task.id)}>&times;</div>
                     </div>
                 </div>
@@ -46,9 +46,8 @@ class Tasks extends Component {
             <div className='todolist'>
                 <div className='todobox'>
                 <h1>TO-DO:</h1>
-                <input className='input' placeholder='title' type='text' onChange={e => this.updateTitle(e.target.value)} />
-                {/* <input className= 'input' placeholder='description' type='text' onChange={e=> this.updateDesc(e.target.value)} /> */}
-                <button className='todobtn' onClick={()=>this.props.addTask(this.state.title)}>Add new To-do</button>
+                <input className='input' placeholder='title' type='text' onChange={e => this.updateTitle(e.target.value)} ref='titleinputbox' />
+                <button className={this.state.title ? 'todobtn' : 'dntshow'} onClick={()=>this.props.addTask(this.state.title)}>Add new To-do</button>
                 </div>
 
 

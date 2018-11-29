@@ -4,8 +4,10 @@
     width: fit-content;
     text-decoration: none;
     color: black;
+    font-weight: bold;
 }
 .editcontainer{
+    padding-top: 20px;
     height: 100vh;
     width: 100vw;
 }
@@ -46,6 +48,7 @@
     border: none;
     color: white;
     font-weight: bold;
+    cursor: pointer;
 }
 .deletebtn {
     background: rgb(216,121,118);
@@ -56,6 +59,7 @@
     border: none;
     color: white;
     font-weight: bold;
+    cursor: pointer;
 }
 .completebtn {
     background: rgb(228,228,228);
@@ -64,6 +68,7 @@
     font-size: 18px;
     border-radius: 3px;
     border: none;
+    cursor: pointer;
 }
 .buttons {
     width: 60vw;
