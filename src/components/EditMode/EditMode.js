@@ -59,7 +59,6 @@ class EditMode extends Component {
             <div className='editcontainer'>
                 <Link to='/' className='goback'>Back to Tasks</Link>
 
-                
                         <div className='edittask' >
                         <p>title</p>
                         <input className='titleedit' value={this.state.title} onChange={e=> this.updateTitle(e.target.value)} ref='editinputbox' />
@@ -71,8 +70,7 @@ class EditMode extends Component {
                         <Link to='/'><button onClick={()=> this.props.deleteTask(id)} className='deletebtn'>Delete</button></Link>
                         <Link to='/'><button onClick={()=>this.props.editTask(id, title, description)} className='save'>Save</button></Link>
                         </div>
-                        
-
+                    
             </div>
             </div>
         );
